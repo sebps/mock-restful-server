@@ -1,0 +1,23 @@
+{
+  "name": "mock-restful-server",
+  "version": "1.0.0",
+  "description": "A lightweight library to launch a mock restful server using models.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sebps/MockRestfulServer.git"
+  },
+  "author": "sebps",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sebps/MockRestfulServer/issues"
+  },
+  "homepage": "https://github.com/sebps/MockRestfulServer#readme",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0"
+  }
+}
