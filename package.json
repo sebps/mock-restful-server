@@ -1,6 +1,6 @@
 {
   "name": "mock-restful-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A lightweight library to launch a mock restful server using models.",
   "main": "index.js",
   "scripts": {
@@ -22,5 +22,8 @@
   },
   "bin": {
     "mock-restful-server": "cli.js"
+  },
+  "dependencies": {
+    "mock-restful-server": "file:../../../../../../../usr/local/lib/node_modules/mock-restful-server"
   }
 }
