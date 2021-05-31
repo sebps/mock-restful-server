@@ -12,8 +12,6 @@ setTimeout(() => {
   
     [ name, value ] = arg.split('=');
   
-    debugger 
-  
     switch(name) {
       case 'models':
       case '-models':
