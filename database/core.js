@@ -30,7 +30,7 @@ const checkRecordConsistence = (model, record) => {
     const constraints = structure[field];
 
     if(constraints.required && !record[field]) throw `${model} : required field : ${field}`;
-    if(constraints.type && typeof record[field] !== constraints.type) throw `${model} : wrong field type : ${field}`;
+    if(record[field] && constraints.type && typeof record[field] !== constraints.type) throw `${model} : wrong field type : ${field}`;
   })
 }
 
