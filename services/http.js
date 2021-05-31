@@ -20,15 +20,13 @@ const parseRequest = async (req, res) => {
   })
 }
 
-const rejectResponse = (res, status, error) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.writeHead(status);
+const rejectResponse = (res, headers, status, error) => {
+  res.writeHead(status, headers);
   res.end(JSON.stringify({ error }));
 }
 
-const resolveResponse = (res, body) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.writeHead(200);
+const resolveResponse = (res, headers, body) => {
+  res.writeHead(200, headers);
   res.end(JSON.stringify(body));
 }
 
