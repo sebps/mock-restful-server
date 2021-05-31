@@ -19,5 +19,8 @@
   "devDependencies": {
     "chai": "^4.3.4",
     "mocha": "^8.4.0"
+  },
+  "bin": {
+    "mock-restful-server": "cli.js"
   }
 }
