@@ -1,96 +1,126 @@
-const collections = {};
-const structures = {};
-const models = [];
+const collections = {}
+const structures = {}
+const models = []
+var mode
+
+const boot = (bootMode) => {
+  mode = bootMode
+}
 
 const registerModel = (name, structure = {}) => {
-  collections[name] = {};
-  structures[name] = structure; 
-  models.push(name);
+  collections[name] = {}
+  structures[name] = structure 
+  models.push(name)
 }
 
 const getInfos = () => {
-  return { collections: models, structures };
+  return { collections: models, structures }
 }
 
 const checkModelExistence = (model) => {
-  if(models.indexOf(model) === -1) throw `${model} : model not exists`;
+  if(models.indexOf(model) === -1) {
+    if(mode === 'STRICT') throw `${model} : model not exists`
+    else if(mode === 'OPEN') registerModel(model)
+  }
 }
 
 const checkRecordExistence = (model, id, mustExist) => {
-  const record = collections[model][id];
+  const record = collections[model][id]
 
-  if (record && !mustExist) throw `${model} : record already exists`;
-  if (!record && mustExist) throw `${model} : record not exists`;
+  if (record && !mustExist) throw `${model} : record already exists`
+  if (!record && mustExist) throw `${model} : record not exists`
 }
 
-const checkRecordConsistence = (model, record) => {
-  const structure = structures[model];
+const checkRecordConsistency = (model, record) => {
+  const structure = structures[model]
 
   Object.keys(structure).forEach((field) => {
-    const constraints = structure[field];
+    const { required, type } = structure[field]
 
-    if(constraints.required && !record[field]) throw `${model} : required field : ${field}`;
-    if(record[field] && constraints.type && typeof record[field] !== constraints.type) throw `${model} : wrong field type : ${field}`;
+    if(required && !record[field]) throw `${model} : required field : ${field}`
+
+    if(record[field] && type) {
+      switch(type) {
+        case 'string':
+        case 'number':
+        case 'boolean':
+        case 'object':
+          if (typeof record[field] !== type) throw `${model} : wrong field type : ${field}`
+        break
+        case 'map':
+          if (typeof record[field] !== 'object') throw `${model} : wrong field type : ${field}`
+        break
+        case 'array':
+          if (!Array.isArray(record[field])) throw `${model} : wrong field type : ${field}`
+        break
+      }
+    }
   })
+  
+  if(mode === 'STRICT') {
+    Object.keys(record).forEach((field) => {
+      if(!structure[field]) throw `${model} : field not defined in model : ${field}`
+    })
+  }
 }
 
 const create = (model, object) => {
-  checkModelExistence(model);
+  checkModelExistence(model)
 
-  const record = Object.assign({}, object);
+  const record = Object.assign({}, object)
 
   if(record.id) {
     checkRecordExistence(model, record.id.toString(), false)
   } else {
-    record.id = "" + Date.now();
+    record.id = '' + Date.now()
   }
 
-  checkRecordConsistence(model, record);
+  checkRecordConsistency(model, record)
 
-  collections[model][record.id] = record;
+  collections[model][record.id] = record
 
-  return record;
+  return record
 }
 
 const get = (model, id) => {
-  checkModelExistence(model);
-  checkRecordExistence(model, id, true);
+  checkModelExistence(model)
+  checkRecordExistence(model, id, true)
 
-  const record = collections[model][id];  
+  const record = collections[model][id]  
 
-  return record;
+  return record
 }
 
 const update = (model, id, object) => {
-  checkModelExistence(model);
-  checkRecordExistence(model, id, true);
+  checkModelExistence(model)
+  checkRecordExistence(model, id, true)
 
-  const newRecord = Object.assign({}, collections[model][id], object);
+  const newRecord = Object.assign({}, collections[model][id], object)
 
-  checkRecordConsistence(model, newRecord);
+  checkRecordConsistency(model, newRecord)
 
-  collections[model][id] = newRecord;
+  collections[model][id] = newRecord
 
-  return newRecord;
+  return newRecord
 }
 
 const destroy = (model, id) => {
-  checkModelExistence(model);
-  checkRecordExistence(model, id, true);
+  checkModelExistence(model)
+  checkRecordExistence(model, id, true)
 
-  const oldRecord = Object.assign({}, collections[model][id]);
+  const oldRecord = Object.assign({}, collections[model][id])
   
-  delete collections[model][id];
+  delete collections[model][id]
 
-  return oldRecord;
+  return oldRecord
 }
 
 const list = (model) => {
-  checkModelExistence(model);
+  checkModelExistence(model)
 
-  const records = Object.values(collections[model]);
+  const records = Object.values(collections[model])
 
-  return records;
+  return records
 }
 
-module.exports = { registerModel, getInfos, create, get, update, destroy, list };
+module.exports = { boot, registerModel, getInfos, create, get, update, destroy, list }

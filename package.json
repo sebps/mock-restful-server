@@ -1,6 +1,6 @@
 {
   "name": "mock-restful-server",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A lightweight library to launch a mock restful server using models.",
   "main": "index.js",
   "scripts": {

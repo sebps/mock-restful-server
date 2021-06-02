@@ -1,45 +1,42 @@
-const http = require('http');
-const { registerModel } = require('./database/core');
-const { handleRequest } = require('./handlers/crud');
+const http = require('http')
+const { handleRequest } = require('./handlers/crud')
+const { bootDatabase, populateDatabase } = require('./services/database')
 
-exports.start = async (models, port = 0) => {
-  let server;
-  let sockets;
+exports.start = async (models, data, mode = 'OPEN', port = 0) => {
+  let server
+  let sockets
 
+  bootDatabase(mode)
+  populateDatabase(models, data)
+  
   const stop = () => {
     for (const socket of sockets) {
-      socket.destroy();
+      socket.destroy()
   
-      sockets.delete(socket);
+      sockets.delete(socket)
     }
   
-    server.close();
+    server.close()
   }
 
-  const listening = await new Promise((resolve, reject) => {
-    if(Array.isArray(models)) {
-      models.forEach(model => registerModel(model));
-    } else {
-      Object.keys(models).forEach(key => registerModel(key, models[key]));
-    }
-
-    server = http.createServer(handleRequest);
-    sockets = new Set();
+  const listening = await new Promise((resolve, reject) => {   
+    server = http.createServer(handleRequest)
+    sockets = new Set()
 
     server.listen(port, (err) => {
-      if (err) return reject(err);
-      resolve(server.address().port);
-    });
+      if (err) return reject(err)
+      resolve(server.address().port)
+    })
 
     server.on('connection', (socket) => {
-      sockets.add(socket);
+      sockets.add(socket)
     
       server.once('close', () => {
-        sockets.delete(socket);
-      });
-    });
-  });
+        sockets.delete(socket)
+      })
+    })
+  })
 
-  console.log(`Mock restful server listening at http://localhost:${listening}`);
-  return { port: listening, stop };
+  console.log(`Mock restful server listening at http://localhost:${listening}`)
+  return { port: listening, stop }
 }

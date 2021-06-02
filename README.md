@@ -22,17 +22,17 @@ A lightweight restful api mock server using models.
 
 ## API
 - Model structure infos 
-GET http://<address>:<port>/
+GET http://{address}:{port}
 - Get collection records
-GET http://<address>:<port>/<collection>
+GET http://{address}:{port}/{collection}
 - Get collection record
-GET http://<address>:<port>/<id>
+GET http://{address}:{port}/{id}
 - Create collection record
-POST http://<address>:<port>/
+POST http://{address}:{port}/
 - Update collection record
-PUT http://<address>:<port>/<id>
+PUT http://{address}:{port}/{id}
 - Delete collection record
-DELETE http://<address>:<port>/<collection>/<id>
+DELETE http://{address}:{port}/{collection}/{id}
 
 ## Usage
 
@@ -44,7 +44,7 @@ $ npm install mock-restful-server
 
 #### Methods signatures
 ```js
-function start(models, port = 0)
+function start(models, data, mode, port = 0)
 ```
 
 *Note: without specifying the port argument a random port will be allocated by the system. The server listening address will be logged in the console at start.
@@ -85,8 +85,31 @@ const models = {
 }
 ```
 
+*Note: supported model attributes are "type" and "required". type can be either "number", "string", "boolean", "array" or "map".
+
 ```js
-const { port, stop } = mockRestfulServer.start(models, 8080)
+const data = {
+  users: [{
+    email: 'john.doe@gmail.com',
+    name: 'John Doe',
+    address: 'Central Park Lake, NY'
+  }],
+  cars: [{
+    name: 'Mustang'
+    brand: 'Ford',
+    year: '1970'
+  }]
+}
+```
+
+```js
+const mode = 'STRICT'
+```
+
+*Note: supported modes are STRICT and OPEN. OPEN is the default mode. In STRICT mode, two case will lead the server to throw an exception at saving time : trying to save a record with no model previously defined and trying to save a record having at least one field which doesn't exist in its model structure.
+
+```js
+const { port, stop } = mockRestfulServer.start(models, data, mode, 8080)
 ```
 
 ```js
@@ -99,7 +122,7 @@ $ npm install -g mock-restful-server
 ```
 
 ```sh
-$ mock-restful-server --models=models.json --port=8080
+$ mock-restful-server --models=models.json --data=data.json --mode=STRICT --port=8080
 ```
 
 ## License
