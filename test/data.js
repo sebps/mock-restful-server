@@ -11,6 +11,12 @@ module.exports = {
       }
     };
   
+    global.credentials = {
+      email: "john.doe@gmail.com",
+      password: "password",
+      repassword: "password"
+    };
+
     global.goodRecordWithoutId = {
       name: "record without id"
     };

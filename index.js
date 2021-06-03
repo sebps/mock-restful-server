@@ -1,5 +1,5 @@
 const http = require('http')
-const { handleRequest } = require('./handlers/crud')
+const { handleRequest } = require('./http/router')
 const { bootDatabase, populateDatabase } = require('./services/database')
 
 exports.start = async (models, data, mode = 'OPEN', port = 0) => {

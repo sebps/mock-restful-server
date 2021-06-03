@@ -58,7 +58,7 @@ const checkRecordConsistency = (model, record) => {
   })
   
   if(mode === 'STRICT') {
-    Object.keys(record).forEach((field) => {
+    Object.keys(record).filter(field => field !== 'id').forEach((field) => {
       if(!structure[field]) throw `${model} : field not defined in model : ${field}`
     })
   }

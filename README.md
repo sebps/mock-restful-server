@@ -21,8 +21,12 @@ A lightweight restful api mock server using models.
 - CRUD operations
 
 ## API
+
+### Server infos
 - Model structure infos 
 GET http://{address}:{port}
+
+### CRUD
 - Get collection records
 GET http://{address}:{port}/{collection}
 - Get collection record
@@ -33,6 +37,14 @@ POST http://{address}:{port}/
 PUT http://{address}:{port}/{id}
 - Delete collection record
 DELETE http://{address}:{port}/{collection}/{id}
+
+### Authentication
+- Signup 
+POST http://{address}:{port}/signup
+- Login
+POST http://{address}:{port}/login
+
+*Note: /login and /signup routes are reserved for authentication related mocking. 
 
 ## Usage
 
