@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "status": { "type": "string" }
+  }
+}
