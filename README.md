@@ -46,6 +46,12 @@ POST http://{address}:{port}/login
 
 *Note: /login and /signup routes are reserved for authentication related mocking. 
 
+### Maintenance
+- Generate a whole random database according to the models
+POST http://{address}:{port}/_randomize
+- Dump the current database 
+POST http://{address}:{port}/_dump
+
 ## Usage
 
 ### Lib mode

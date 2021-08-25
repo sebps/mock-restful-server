@@ -1,5 +1,7 @@
 module.exports = {
   auth: require("./auth"),
   crud: require("./crud"),
-  welcome: require("./welcome")
+  dump: require("./dump"),
+  welcome: require("./welcome"),
+  randomize: require("./randomize")
 }

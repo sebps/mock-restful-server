@@ -13,6 +13,16 @@ const registerModel = (name, structure = {}) => {
   models.push(name)
 }
 
+const getStructures = () => {
+  return structures
+}
+
+const getCollections = () => {
+  return Object.keys(collections).reduce((aggregated, current) => {
+    return { ...aggregated, [current]: Object.values(collections[current]) }
+  }, {})
+}
+
 const getInfos = () => {
   return { collections: models, structures }
 }
@@ -72,7 +82,7 @@ const create = (model, object) => {
   if(record.id) {
     checkRecordExistence(model, record.id.toString(), false)
   } else {
-    record.id = '' + Date.now()
+    record.id = '' + Date.now() + '-' + Math.floor(Math.random() * 1000000000)
   }
 
   checkRecordConsistency(model, record)
@@ -123,4 +133,4 @@ const list = (model) => {
   return records
 }
 
-module.exports = { boot, registerModel, getInfos, create, get, update, destroy, list }
+module.exports = { boot, registerModel, getStructures, getCollections, getInfos, create, get, update, destroy, list }
