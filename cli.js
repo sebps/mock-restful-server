@@ -20,6 +20,7 @@ setTimeout(() => {
       case '--models':
         rawModels = readFileSync(value)
         models = JSON.parse(rawModels)
+        break
       case 'data':
       case '-data':
       case '--data':
